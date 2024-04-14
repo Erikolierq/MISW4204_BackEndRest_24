@@ -14,5 +14,5 @@ api = Api(app)
 api.add_resource(VistaSignIn, '/api/auth/singup')
 api.add_resource(VistaLogIn, '/api/auth/login')
 api.add_resource(vistaTasks, '/api/tasks')
-api.add_resource(VistaTask, '/api/tasks/<int:id>')
+api.add_resource(VistaTask, '/api/task/<int:id>')
 

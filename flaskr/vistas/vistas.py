@@ -95,27 +95,41 @@ def allowed_file(filename):
 
 class VistaTask(Resource):
     @jwt_required()
-    def get(self, video_id):
-        video = Video.query.filter_by(id=video_id, user_id=current_user.id).first()
-        print(video)
-        if not video:
-            abort(404, description="Video not found")
-
-        video_data = {
+    def get(self, id):
+        video = Video.query.filter_by(id=id).first()
+        if video is None:
+            return Response(response=json.dumps({'message': 'Video no encontrado o no tienes permiso para acceder a este video.'}), status=404, mimetype='application/json')
+        response_data = {
             'id': video.id,
             'title': video.title,
-            'description': video.description,
             'processed': video.processed,
-            'url_original': video.url_original,
-            'url_processed': video.url_processed
+            
         }
-
-        response_data = {'video': video_data}
+        if video.processed == 'processed':
+            response_data['url_procesada'] = video.url_processed
         return Response(response=json.dumps(response_data), status=200, mimetype='application/json')
      
     @jwt_required()
-    def delete(self):
-        pass    
+    def delete(self, id):
+        video = Video.query.filter_by(id=id).first()
+        if video is None:
+            return Response(response=json.dumps({'message': 'Video no encontrado o no tienes permiso para acceder a este video.'}), status=404, mimetype='application/json')
+
+        filename_original = os.path.basename(video.url_original)
+        filename_processed = os.path.basename(video.url_processed)
+
+        try:
+            # Eliminar el video de la base de datos
+            db.session.delete(video)
+            db.session.commit()
+
+            # Eliminar los archivos del sistema de archivos
+            os.remove(os.path.join(UPLOAD_FOLDER, filename_original))
+            os.remove(os.path.join(PROCESSED_FOLDER, filename_processed))
+
+            return {'message': 'Video eliminado exitosamente'}, 200
+        except Exception as e:
+            return {'message': 'Error al eliminar el video'}, 500
     
     
 
@@ -125,3 +139,4 @@ def procesar_video(input_path, output_path, duracion_maxima):
     video_recortado.write_videofile(output_path)
     video.close()
     video_recortado.close()
+    
