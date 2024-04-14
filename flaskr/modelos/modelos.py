@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+from sqlalchemy import UniqueConstraint
 from marshmallow import fields
 import enum
 
@@ -8,31 +9,57 @@ db = SQLAlchemy()
 
 
 
-class Vuelo(db.Model):
+class User(db.Model):
+    __table_args__ = (UniqueConstraint('email', name='unique_email'),)
     id = db.Column(db.Integer, primary_key=True)
-    origen = db.Column(db.String(100), nullable=False)
-    destino = db.Column(db.String(100), nullable=False)
-    hora_salida = db.Column(db.String(100), nullable=False)
-    sillas_disponibles = db.Column(db.Integer, nullable=False)
+    username = db.Column(db.String(100), unique=True, nullable=False)
+    email = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.String(100), nullable=False)
 
-class Reserva(db.Model):
+class Video(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    vuelo_id = db.Column(db.Integer, db.ForeignKey('vuelo.id'), nullable=False)
-    nombre_pasajero = db.Column(db.String(100), nullable=False)
-    correo_pasajero = db.Column(db.String(100), nullable=False)
-    num_pasajeros = db.Column(db.Integer, nullable=False)
-
-    vuelo = db.relationship('Vuelo', backref=db.backref('reservas', lazy=True))
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text, nullable=True)
+    edit = db.Column(db.Boolean, default=False)
+    url = db.Column(db.String(100), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user = db.relationship('User', backref=db.backref('videos', lazy=True))
     
 
-class VueloSchema(SQLAlchemyAutoSchema):
+class Vote(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    video_id = db.Column(db.Integer, db.ForeignKey('video.id'), nullable=False)
+    value = db.Column(db.Integer, nullable=False)
+    user = db.relationship('User', backref=db.backref('votes', lazy=True))
+    video = db.relationship('Video', backref=db.backref('votes', lazy=True))
+    
+    
+class VideoLeaderboard(db.Model):
+    video_id = db.Column(db.Integer, db.ForeignKey('video.id'), primary_key=True)
+    total_votes = db.Column(db.Integer, nullable=False, default=0)
+    video = db.relationship('Video', backref=db.backref('leaderboard', lazy=True))
+
+class UserSchema(SQLAlchemyAutoSchema):
     class Meta:
-         model = Vuelo
+         model = User
          include_relationships = True
          load_instance = True
 
-class ReservaSchema(SQLAlchemyAutoSchema):
+class VideoSchema(SQLAlchemyAutoSchema):
     class Meta:
-         model = Reserva
+         model = Video
+         include_relationships = True
+         load_instance = True
+
+class VoteSchema(SQLAlchemyAutoSchema):
+    class Meta:
+         model = Vote
+         include_relationships = True
+         load_instance = True
+         
+class VideoLeaderboardSchema(SQLAlchemyAutoSchema):
+    class Meta:
+         model = VideoLeaderboard
          include_relationships = True
          load_instance = True
