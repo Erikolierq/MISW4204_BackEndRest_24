@@ -67,9 +67,5 @@ class VistaReservas(Resource):
         reserva_data = request.json
         if not all(key in reserva_data for key in ['vuelo_id', 'nombre_pasajero', 'correo_pasajero', 'num_pasajeros']):
             return Response(response=json.dumps({"error": "Faltan campos requeridos"}), status=400, mimetype='application/json')
-    
-        # Envía la tarea Celery para manejar la creación de la reserva
         task = crear_reserva.delay(reserva_data['vuelo_id'], reserva_data['nombre_pasajero'], reserva_data['correo_pasajero'], reserva_data['num_pasajeros'])
-    
-        # Puedes devolver la información de la tarea, si lo deseas
         return Response(response=json.dumps({"task_id": task.id}), status=202, mimetype='application/json')
