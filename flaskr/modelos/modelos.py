@@ -20,8 +20,10 @@ class Video(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=True)
-    edit = db.Column(db.Boolean, default=False)
-    url = db.Column(db.String(100), nullable=False)
+    processed = db.Column(db.String(100), default="uploaded")
+    uploaded_at = db.Column(db.DateTime, nullable=False)
+    url_original = db.Column(db.String(100), nullable=False)
+    url_processed = db.Column(db.String(100), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     user = db.relationship('User', backref=db.backref('videos', lazy=True))
     
