@@ -5,21 +5,58 @@ API REST - Flask. Esta es una API básica que proporciona varios endpoints, para
 
 Para ejecutar la aplicación siga las siguientes instrucciones: 
 
-## Instalar dependecias de proyecto
-> * ```$ python3 -m venv nuevo_ambiente```
-> * ```$ source nuevo_ambiente/bin/activate```
-> * ```$ cd flaskr```
-> * ```$ pip install -r requirements.txt```
-> * ```$ mkdir videos```
+## Instalación
 
-## Ejecutar
-> * ```$ flask run -h 0.0.0.0```
+1. Clona el repositorio de Flaskr:
 
-## Consumir los servicios
-* Utilice Postman (o una herramienta equivalente) para realizar solicitudes post a los endpoints disponibles. 
-> * Ruta Endpoint 1 [POST]: ```http://ip_servidor:5000/api/auth/singup```
-> * Ruta Endpoint 2 [POST]: ```http://ip_servidor:5000/api/auth/login```
-> * Ruta Endpoint 3 [POST]: ```http://ip_servidor:5000/api/tasks```
-> * Ruta Endpoint 4 [GET]: ```http://ip_servidor:5000/api/tasks```
-> * Ruta Endpoint 5 [POST]: ```http://ip_servidor:5000/api/task/id```
-> * Ruta Endpoint 6 [DEL]:```http://ip_servidor:5000/api/task/id```
+```
+git clone https://github.com/Erikolierq/MISW4204_BackEndRest_24
+```
+
+2. Instala las dependencias:
+
+```
+pip install -r requirements.txt
+```
+
+3. Inicia Redis Server:
+
+```
+sudo service redis-server start
+```
+
+## Ejecución
+
+Para ejecutar la aplicación Flask, sigue estos pasos:
+
+1. Abre una terminal y navega hasta la carpeta `flaskr`.
+
+2. Ejecuta el siguiente comando para iniciar la aplicación:
+
+```
+flask run
+```
+
+Para ejecutar Celery y procesar tareas en segundo plano, utiliza el siguiente comando:
+
+```
+celery -A flaskr.modelos.tareas worker --pool=solo -l info
+```
+
+## APIs Disponibles
+
+- **Registro de Usuario**: 
+  - Método: `POST`
+  - URL: `/api/auth/singup`
+
+- **Inicio de Sesión**: 
+  - Método: `POST`
+  - URL: `/api/auth/login`
+
+- **Obtener Lista de Tareas**: 
+  - Método: `GET`
+  - URL: `/api/tasks`
+
+- **Obtener Detalles de una Tarea Específica**: 
+  - Método: `GET`
+  - URL: `/api/task/<int:id>`
