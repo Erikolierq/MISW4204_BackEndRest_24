@@ -56,7 +56,15 @@ celery -A flaskr.modelos.tareas worker --pool=solo -l info
 - **Obtener Lista de Tareas**: 
   - Método: `GET`
   - URL: `/api/tasks`
+ 
+- **Subir un video**: 
+  - Método: `POST`
+  - URL: `/api/tasks`
 
 - **Obtener Detalles de una Tarea Específica**: 
   - Método: `GET`
+  - URL: `/api/task/<int:id>`
+ 
+- **Eliminar un video**: 
+  - Método: `DELETE`
   - URL: `/api/task/<int:id>`
