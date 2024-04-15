@@ -11,6 +11,9 @@ from datetime import datetime
 from werkzeug.utils import secure_filename
 from moviepy.editor import VideoFileClip
 from flask import abort
+from ..modelos.tareas import process_video
+from flask import current_app
+
 
 User_Schema = UserSchema()
 Video_Schema = VideoSchema()
@@ -18,6 +21,9 @@ Vote_Schema= VoteSchema()
 VideoLeaderboard_Schema = VideoLeaderboardSchema()
 UPLOAD_FOLDER = 'videos'
 PROCESSED_FOLDER = 'videos'
+
+
+
 
 class VistaSignIn(Resource):
 
@@ -58,38 +64,43 @@ class vistaTasks(Resource):
     @jwt_required()
     def post(self):
         if 'file' not in request.files:
-            return {'message': 'No se proporcionó ningún archivo'}, 400
+            return Response('No se proporcionó ningún archivo', status=400)
         
         file = request.files['file']
-        
+    
         if file.filename == '':
-            return {'message': 'No se seleccionó ningún archivo'}, 400
-        
+            return Response('No se seleccionó ningún archivo', status=400)
+    
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file_path = os.path.join(UPLOAD_FOLDER, filename)
             file.save(file_path)
-            video_url = f'http://example.com/{file_path}'
+            video_url = f'http://example.com/{filename}'
             output_path = os.path.join(PROCESSED_FOLDER, f"processed_{filename}")
-            procesar_video(file_path, output_path, duracion_maxima=20)
-            processed_video_url = f'http://example.com/{output_path}'
+            video_url_proc = f'http://example.com/processed{filename}'
+     
             new_video = Video(
                 title=request.form.get('title'),
                 description=request.form.get('description'),
                 url_original=video_url,
-                url_processed=processed_video_url,
+                url_processed=video_url_proc, 
                 uploaded_at=datetime.utcnow(),
-                processed="processed",
+                processed="upload",  
                 user_id=current_user.id
             )
+            file_path="flaskr/"+file_path
+            output_path="flaskr/"+output_path
+            print(new_video.title,file_path, output_path, 20)
+            
+            process_video.delay(new_video.title,file_path, output_path, 20)
             db.session.add(new_video)
             db.session.commit()
-            
-            return {'message': 'Vídeo subido y procesado exitosamente', 'video_url': processed_video_url}, 201
         
+            return Response('Vídeo subido y proceso iniciado correctamente', status=201, headers={'video_url': video_url})
+    
         else:
-            return {'message': 'El tipo de archivo no está permitido'}, 400
-
+            return Response('El tipo de archivo no está permitido', status=400)
+        
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'mp4', 'avi', 'mov', 'jpg', 'png'}
 
@@ -119,11 +130,8 @@ class VistaTask(Resource):
         filename_processed = os.path.basename(video.url_processed)
 
         try:
-            # Eliminar el video de la base de datos
             db.session.delete(video)
             db.session.commit()
-
-            # Eliminar los archivos del sistema de archivos
             os.remove(os.path.join(UPLOAD_FOLDER, filename_original))
             os.remove(os.path.join(PROCESSED_FOLDER, filename_processed))
 
