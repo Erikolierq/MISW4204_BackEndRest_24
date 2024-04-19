@@ -1,6 +1,6 @@
 import json
 import os
-from flask import Response, request
+from flask import Response, request,Flask
 from sqlalchemy import exc
 from ..modelos import db, User, UserSchema, Video, VideoSchema, Vote, VoteSchema, VideoLeaderboard, VideoLeaderboardSchema
 from flask_jwt_extended import create_access_token, current_user, jwt_required
@@ -21,7 +21,6 @@ Vote_Schema= VoteSchema()
 VideoLeaderboard_Schema = VideoLeaderboardSchema()
 UPLOAD_FOLDER = 'videos'
 PROCESSED_FOLDER = 'videos'
-
 
 
 
