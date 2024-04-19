@@ -23,9 +23,8 @@ def make_celery(app):
 def create_app(config_name):
     app = Flask(__name__)  
     
-    app.config['SQLALCHEMY_DATABASE_URI']= 'postgresql+psycopg2://postgres:104.198.251.244:5432/dbvideoapp'
+    app.config['SQLALCHEMY_DATABASE_URI']= 'postgresql://admin:v1d304pp@104.198.251.244:5432/dbvideoapp'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
-
     app.config["JWT_SECRET_KEY"] = "frase-secreta"
     app.config["PROPAGATE_EXCEPTIONS"] = True
 
