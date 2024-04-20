@@ -4,6 +4,11 @@ from .modelos import db
 from .vistas import VistaLogIn, VistaSignIn, vistaTasks, VistaTask
 
 app = create_app('default')
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0')
+
+
 app_context = app.app_context()
 app_context.push()
 
