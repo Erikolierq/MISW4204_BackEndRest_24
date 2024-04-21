@@ -5,10 +5,6 @@ from .vistas import VistaLogIn, VistaSignIn, vistaTasks, VistaTask
 
 app = create_app('default')
 
-if __name__ == "__main__":
-    app.run(host='0.0.0.0')
-
-
 app_context = app.app_context()
 app_context.push()
 
@@ -21,3 +17,5 @@ api.add_resource(VistaLogIn, '/api/auth/login')
 api.add_resource(vistaTasks, '/api/tasks')
 api.add_resource(VistaTask, '/api/task/<int:id>')
 
+if __name__ == "__main__":
+    app.run(host='0.0.0.0')
