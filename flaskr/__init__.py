@@ -4,7 +4,7 @@ from flask_jwt_extended import JWTManager
 from .modelos import db, User
 from celery import Celery
 
-celery = Celery(__name__, broker='redis://localhost:6379/0', backend='redis://localhost:6379/0')
+celery = Celery(__name__, broker='redis://10.138.0.6:6379/0', backend='redis://10.138.0.6:6379/0')
 
 def make_celery(app):
     celery.conf.update(app.config)
@@ -22,8 +22,8 @@ def make_celery(app):
 
 def create_app(config_name):
     app = Flask(__name__)  
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///IDRL.db'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://admin:v1d304pp@34.42.93.118:5432/dbvideoapp'    
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
     app.config["JWT_SECRET_KEY"] = "frase-secreta"
     app.config["PROPAGATE_EXCEPTIONS"] = True
 
