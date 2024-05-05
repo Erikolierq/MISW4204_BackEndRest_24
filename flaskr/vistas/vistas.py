@@ -103,7 +103,7 @@ class vistaTasks(Resource):
         
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'mp4', 'avi', 'mov', 'jpg', 'png'}
-
+    #limitar peso del video
 class VistaTask(Resource):
     @jwt_required()
     def get(self, id):
