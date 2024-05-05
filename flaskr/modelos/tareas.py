@@ -6,7 +6,7 @@ import os
 
 
 
-celery = Celery(__name__, broker='redis://localhost:6379/0', backend='redis://localhost:6379/0')
+celery = Celery(__name__, broker='redis://10.138.0.6:6379/0', backend='redis://10.138.0.6:6379/0')
 
 
 
