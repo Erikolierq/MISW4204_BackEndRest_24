@@ -32,6 +32,9 @@ os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = 'claves\soluciones-cloud-420823-7
 #)
 #client = storage.Client(credentials=credentials)
 
+
+
+
 class VistaSignIn(Resource):
 
     def post(self):
