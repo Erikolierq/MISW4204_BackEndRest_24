@@ -1,0 +1,8 @@
+# Ignorar el archivo JSON con las credenciales
+flaskr/claves/soluciones-cloud-420823-70ce317b34ee.json
+
+# Ignorar el directorio del entorno virtual
+flaskr/venv/
+
+flaskr/modelos/__pycache__
+flaskr/vistas/__pycache__
