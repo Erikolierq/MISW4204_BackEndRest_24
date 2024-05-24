@@ -26,7 +26,7 @@ VideoLeaderboard_Schema = VideoLeaderboardSchema()
 UPLOAD_FOLDER = 'videos'
 PROCESSED_FOLDER = 'videos'
 #service_account_key = credentials_data['private_key']
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = 'claves\soluciones-cloud-420823-70ce317b34ee.json'
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = 'claves\clave.json'
 #credentials = service_account.Credentials.from_service_account_file(
     #'claves\soluciones-cloud-420823-70ce317b34ee.json'
 #)
