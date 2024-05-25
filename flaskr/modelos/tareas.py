@@ -18,7 +18,7 @@ if file_exists(path1):
 elif file_exists(path2):
     credentials_path = path2
 else:
-    # Si no se encuentra en ninguna de las rutas, mostrar un mensaje de error o manejarlo según lo necesites
+    # Si no se encuentra en ninguna de las rutas
     print("El archivo no se encuentra en ninguna de las ubicaciones especificadas")
 
     
