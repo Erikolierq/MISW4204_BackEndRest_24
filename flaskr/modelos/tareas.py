@@ -5,8 +5,8 @@ from moviepy.editor import VideoFileClip
 import os
 from google.cloud import storage
 
-path1 = 'claves/clave.json'
-path2 = 'flaskr/claves/clave.json'
+path1 = 'claves\clave.json'
+path2 = 'flaskr\claves\clave.json'
 
 def file_exists(path):
     return os.path.isfile(path)
