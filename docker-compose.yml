@@ -21,7 +21,7 @@ services:
   # Celery worker service
   worker:
     build: 'flaskr'
-    command: celery -A modelos.tareas worker --pool=solo -l info
+    command: python pobsub_worker.py
     volumes:
       - .:/code  # Mount your project directory for worker access
     depends_on:
