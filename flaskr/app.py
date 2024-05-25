@@ -20,4 +20,4 @@ api.add_resource(VistaTask, '/api/task/<int:id>')
 
 if __name__ == "__main__":
     
-    app.run(host='0.0.0.0', port=os.environ.get("FLASK_SERVER_PORT", 9090), debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)

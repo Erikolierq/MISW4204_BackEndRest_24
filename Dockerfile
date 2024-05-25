@@ -1,6 +1,6 @@
 
 #Imagen de python ligera
-FROM ubuntu:20.04 AS builder
+FROM alpine
 
 #Espacio  de trabajo
 WORKDIR /server/
@@ -12,12 +12,10 @@ COPY requirements.txt .
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Actualiza los repositorios de apt e instala Python y las herramientas necesarias
-RUN apt-get update && apt-get install -y \
-    python3 \
-    python3-pip \
-    python3-dev \
-    build-essential \
-    && rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache python3-dev \
+    && python3-pip \
+    && pip3 install --upgrade pip 
+    
 #Instala las dependencias necesarias para correr el codigo
 RUN pip install -r requirements.txt
 
@@ -26,7 +24,3 @@ EXPOSE 5000
 ENV FLASK_ENV development
 ENV FLASK_RUN_PORT 5000
 ENV FLASK_RUN_HOST 0.0.0.0
-
-
-
-
