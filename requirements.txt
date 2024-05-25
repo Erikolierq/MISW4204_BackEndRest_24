@@ -37,3 +37,4 @@ redis==5.0.2
 moviepy==1.0.3
 google-cloud-storage
 google-auth
+setuptools==58.2.0

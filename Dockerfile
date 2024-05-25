@@ -1,5 +1,6 @@
+
 #Imagen de python ligera
-FROM ubuntu:20.04
+FROM ubuntu:20.04 AS builder
 
 #Espacio  de trabajo
 WORKDIR /server/
@@ -19,4 +20,13 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 #Instala las dependencias necesarias para correr el codigo
 RUN pip install -r requirements.txt
+
+EXPOSE 5000
+
+ENV FLASK_ENV development
+ENV FLASK_RUN_PORT 5000
+ENV FLASK_RUN_HOST 0.0.0.0
+
+
+
 
