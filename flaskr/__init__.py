@@ -4,7 +4,7 @@ from flask_jwt_extended import JWTManager
 from .modelos import db, User
 from celery import Celery
 
-celery = Celery(__name__, broker='redis://localhost:6379/0', backend='redis://localhost:6379/0')
+celery = Celery(__name__, broker='redis://server-redis:6379/0', backend='redis://server-redis:6379/0')
 
 def make_celery(app):
     celery.conf.update(app.config)
