@@ -6,8 +6,14 @@ services:
     build: 'flaskr'
     ports:
       - "5000:5000"
+    volumes:
+      - .:/web  
     environment:
       - REDIS_URL=redis://server-redis:6379  # Set REDIS_URL for Flask app
+      - DB_USER = admin
+      - DB_PASSWORD = v1d304pp
+      - DB_NAME = odbvideoapp
+      - DB_CONNECTION_NAME = 34.172.133
     networks:
       - webnet  # Red para conectar otros servicios (opcional)
 

@@ -15,4 +15,10 @@ ENV FLASK_RUN_PORT 5000
 ENV FLASK_RUN_HOST 0.0.0.0
 ENV REDIS_URL=redis://localhost:6379
 
+ENV DB_USER = admin
+ENV DB_PASSWORD = v1d304pp
+ENV DB_NAME = dbvideoapp
+ENV DB_CONNECTION_NAME = 34.123.41.208
+
+
 CMD ["flask", "run", "-h", "0.0.0.0", "-p", "5000"]

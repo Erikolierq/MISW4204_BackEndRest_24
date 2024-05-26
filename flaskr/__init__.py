@@ -3,8 +3,16 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from .modelos import db, User
 from celery import Celery
+import os
+
 
 celery = Celery(__name__, broker='redis://server-redis:6379/0', backend='redis://server-redis:6379/0')
+
+
+DB_USER = os.getenv('DB_USER')
+DB_PASSWORD = os.getenv('DB_PASSWORD')
+DB_NAME = os.getenv('DB_NAME')
+DB_CONNECTION_NAME = os.getenv('DB_CONNECTION_NAME')
 
 def make_celery(app):
     celery.conf.update(app.config)
@@ -22,7 +30,7 @@ def make_celery(app):
 
 def create_app(config_name):
     app = Flask(__name__)  
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://admin:v1d304pp@34.123.41.208:5432/dbvideoapp'    
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_CONNECTION_NAME}:5432/{DB_NAME}'    
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
     app.config["JWT_SECRET_KEY"] = "frase-secreta"
     app.config["PROPAGATE_EXCEPTIONS"] = True
