@@ -88,10 +88,10 @@ class vistaTasks(Resource):
         if file and allowed_file(file.filename):
             total_videos = str(Video.query.count())
             filename = secure_filename(total_videos+file.filename)
-            file_path = os.path.join(UPLOAD_FOLDER, filename)
+            file_path = os.path.join(filename)
             file.save(file_path)
             video_url = f'https://storage.cloud.google.com/backmisw4204/original/{filename}'
-            output_path = os.path.join(PROCESSED_FOLDER, f"processed_{filename}")
+            output_path = os.path.join(f"processed_{filename}")
             video_url_proc = f'https://storage.cloud.google.com/backmisw4204/editado/processed_{filename}'
      
             new_video = Video(
@@ -104,8 +104,8 @@ class vistaTasks(Resource):
                 user_id=current_user.id
             )
             
-            file_path="flaskr/"+file_path
-            output_path="flaskr/"+output_path
+            #file_path="flaskr/"+file_path
+            #output_path="flaskr/"+output_path
             
             # Publicar un mensaje en Pub/Sub
             message = {

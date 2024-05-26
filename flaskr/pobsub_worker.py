@@ -4,8 +4,8 @@ import json
 from moviepy.editor import VideoFileClip
 import os
 from google.cloud import storage
-
-app = Celery('tasks', broker='redis://server-redis:6379/0', backend='redis://server-redis:6379/0')
+URL_REDIS = os.getenv('URL_REDIS')
+app = Celery('tasks', broker='redis://'+URL_REDIS+':6379/0', backend='redis://'+URL_REDIS+':6379/0')
 path1 = 'claves/clave.json'
 path2 = 'flaskr/claves/clave.json'
 
