@@ -3,6 +3,7 @@ FROM python:3.10
 WORKDIR /flaskr
 
 COPY requirements.txt .
+COPY entrypoint.sh /flaskr/entrypoint.sh
 RUN pip install -r requirements.txt
 
 COPY . .
@@ -20,6 +21,5 @@ ENV DB_PASSWORD v1d304pp
 ENV DB_NAME dbvideoapp
 ENV DB_CONNECTION_NAME 34.123.41.208
 
-
-
-CMD ["flask", "run", "-h", "0.0.0.0", "-p", "5000"]
+# Establecer el script de entrada
+ENTRYPOINT ["/flaskr/entrypoint.sh"]

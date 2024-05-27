@@ -1,5 +1,4 @@
 version: '3.8'
-
 services:
   # Flask application service
   server-web:
@@ -7,46 +6,31 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - REDIS_URL server-redis  # Set REDIS_URL for Flask app
+      - URL_REDIS server-redis
       - DB_USER admin
       - DB_PASSWORD v1d304pp
       - DB_NAME dbvideoapp
       - DB_CONNECTION_NAME 34.123.41.208
     networks:
-      - webnet  # Red para conectar otros servicios (opcional)
-
-  # Redis service 
+      - webnet
+  # Redis service
   server-redis:
     image: redis:latest
     ports:
       - "6379:6379"
     networks:
-      - webnet  # Red para conectar otros servicios (opcional)
-  # Celery worker service
-  worker:
-    build: 'flaskr'
-    command: python pobsub_worker.py
-    volumes:
-      - .:/code  # Mount your project directory for worker access
-    depends_on:
-      - server-web  # Worker depends on the app service being up first
-    environment:
-      - REDIS_URL=redis://server-redis:6379  # Set REDIS_URL for Celery worker
-    networks:
       - webnet
-  # Celery worker service
+  # Nginx service
   nginx:
     image: nginx:latest
     container_name: nginx
     ports:
-      - "80:80"  # Exponiendo el puerto 80 para Nginx
+      - "80:80"
     volumes:
-      - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf:ro # Monta tu archivo nginx.conf
+      - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
-      - server-web  # Nginx depende del servicio de la aplicación
+      - server-web
     networks:
       - webnet
-
 networks:
   webnet:
-  
