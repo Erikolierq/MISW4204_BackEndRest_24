@@ -5,8 +5,8 @@ from moviepy.editor import VideoFileClip
 import os
 from google.cloud import storage
 
-path1 = 'claves\soluciones-cloud-420823-70ce317b34ee.json'
-path2 = 'flaskr\claves\soluciones-cloud-420823-70ce317b34ee.json'
+path1 = 'claves/clave.json'
+path2 = 'flaskr/claves/clave.json'
 
 def file_exists(path):
     return os.path.isfile(path)
@@ -18,12 +18,12 @@ if file_exists(path1):
 elif file_exists(path2):
     credentials_path = path2
 else:
-    # Si no se encuentra en ninguna de las rutas, mostrar un mensaje de error o manejarlo según lo necesites
+    # Si no se encuentra en ninguna de las rutas
     print("El archivo no se encuentra en ninguna de las ubicaciones especificadas")
 
     
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_path    
-celery = Celery(__name__, broker='redis://localhost:6379/0', backend='redis://localhost:6379/0')
+celery = Celery(__name__, broker='redis://server-redis:6379/0', backend='redis://server-redis:6379/0')
 storage_client = storage.Client()
 
 @celery.task(bind=True)

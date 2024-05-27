@@ -2,6 +2,7 @@ from flaskr import create_app
 from flask_restful import Api
 from .modelos import db
 from .vistas import VistaLogIn, VistaSignIn, vistaTasks, VistaTask
+import os
 
 app = create_app('default')
 
@@ -18,4 +19,5 @@ api.add_resource(vistaTasks, '/api/tasks')
 api.add_resource(VistaTask, '/api/task/<int:id>')
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0')
+    
+    app.run(host='0.0.0.0', port=5000, debug=True)
