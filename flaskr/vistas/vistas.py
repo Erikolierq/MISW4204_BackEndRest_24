@@ -27,7 +27,7 @@ VideoLeaderboard_Schema = VideoLeaderboardSchema()
 UPLOAD_FOLDER = 'videos'
 PROCESSED_FOLDER = 'videos'
 #service_account_key = credentials_data['private_key']
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = 'claves\soluciones-cloud-420823-70ce317b34ee.json'
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = 'claves/clave.json'
 #credentials = service_account.Credentials.from_service_account_file(
     #'claves\soluciones-cloud-420823-70ce317b34ee.json'
 #)
@@ -88,10 +88,10 @@ class vistaTasks(Resource):
         if file and allowed_file(file.filename):
             total_videos = str(Video.query.count())
             filename = secure_filename(total_videos+file.filename)
-            file_path = os.path.join(UPLOAD_FOLDER, filename)
+            file_path = os.path.join(filename)
             file.save(file_path)
             video_url = f'https://storage.cloud.google.com/backmisw4204/original/{filename}'
-            output_path = os.path.join(PROCESSED_FOLDER, f"processed_{filename}")
+            output_path = os.path.join(f"processed_{filename}")
             video_url_proc = f'https://storage.cloud.google.com/backmisw4204/editado/processed_{filename}'
      
             new_video = Video(
@@ -103,6 +103,8 @@ class vistaTasks(Resource):
                 processed="upload",  
                 user_id=current_user.id
             )
+
+            
             #file_path="flaskr/"+file_path
             #output_path="flaskr/"+output_path
             
@@ -115,7 +117,7 @@ class vistaTasks(Resource):
             }
             message_data = json.dumps(message).encode('utf-8')
             publisher.publish(topic_path, data=message_data)
-            
+
             #print(filename,file_path, output_path, 20)
             
             #process_video.delay(filename,file_path, output_path, 20, total_videos)
