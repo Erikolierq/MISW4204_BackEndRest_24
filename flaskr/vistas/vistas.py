@@ -103,6 +103,7 @@ class vistaTasks(Resource):
                 processed="upload",  
                 user_id=current_user.id
             )
+
             
             #file_path="flaskr/"+file_path
             #output_path="flaskr/"+output_path
@@ -116,7 +117,7 @@ class vistaTasks(Resource):
             }
             message_data = json.dumps(message).encode('utf-8')
             publisher.publish(topic_path, data=message_data)
-            
+
             #print(filename,file_path, output_path, 20)
             
             #process_video.delay(filename,file_path, output_path, 20, total_videos)
